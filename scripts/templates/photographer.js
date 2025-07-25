@@ -1,5 +1,5 @@
 function photographerTemplate(data) {
-  const { name, portrait, city, country, tagline, price } = data;
+  const { id, name, portrait, city, country, tagline, price } = data;
 
   const picture = portrait;
 
@@ -8,14 +8,17 @@ function photographerTemplate(data) {
 
     const link = document.createElement("a");
     link.setAttribute("href", `photographer.html?id=${id}`);
-    link.setAttribute(`Voir la page de ${name}`);
+    link.setAttribute("aria-label", `Voir la page de ${name}`);
+    link.classList.add("no-underline");
 
     const img = document.createElement("img");
     img.setAttribute("src", picture);
     img.setAttribute("alt", name);
+    img.classList.add("photographer-img-${id}");
 
     const h2 = document.createElement("h2");
     h2.textContent = name;
+    h2.classList.add("photographer-name-${id}");
 
     link.appendChild(img);
     link.appendChild(h2);

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/photographer.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
@@ -14,9 +14,18 @@
       </nav>
     </header>
     <main id="main">
-      <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+      <div class="photograph-header" id="photographer-header">
+        !!<button class="contact_button" onclick="displayModal()">Contactez-moi</button>
       </div>
+      <div class="sort-options">
+        <label for="sortSelect">Trier par</label>
+        <select id="sortSelect">
+        <option value="popularity">Popularité</option>
+        <option value="date">Date</option>
+        <option value="title">Titre</option>
+        </select>
+      </div>
+      <div class="media-gallery"></div>
     </main>
     <div id="contact_modal">
 			<div class="modal">
@@ -33,7 +42,8 @@
 				</form>
 			</div>
 		</div>
-    <script src="/scripts/pages/photographer.js"></script>²
-    <script src="/scripts/utils/contactForm.js"></script>
+    <aside class="photographer-stats"></aside>
+    <script src="scripts/pages/photographer.js"></script>
+    <script src="scripts/utils/contactForm.js"></script>
   </body>
 </html>
