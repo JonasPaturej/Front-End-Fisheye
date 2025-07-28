@@ -1,10 +1,16 @@
+body {
+  font-family: "DM Sans", sans-serif;
+  margin: 0;
+}
+
 #contact_modal {
   display: none;
 }
 
 .logo {
+  display: block;
   height: 50px;
-  margin-left: 100px;
+  margin: 25px 100px;
 }
 
 .photograph-header {
@@ -14,7 +20,7 @@
   gap: 30px;
   background-color: #fafafa;
   padding: 50px 100px;
-  margin: 0 auto;
+  margin: 0 100px;
 }
 
 .photographer-info {
@@ -24,7 +30,7 @@
 }
 
 .photographer-info h1 {
-  font-size: 36px;
+  font-size: 50px;
   color: #d3573c;
   margin: 0;
 }
@@ -60,6 +66,10 @@
   cursor: pointer;
 }
 
+.contact_button:hover {
+  background-color: #db8876;
+}
+
 .modal {
   border-radius: 5px;
   background-color: #db8876;
@@ -70,6 +80,10 @@
   justify-content: space-between;
   padding: 35px;
   margin: auto;
+  z-index: 9999;
+  position: absolute;
+  top: 100px;
+  left: 100px;
 }
 
 .modal header {
@@ -112,4 +126,217 @@ form input {
   height: 68px;
   border: none;
   border-radius: 5px;
+}
+
+.filter-options {
+  position: relative;
+  display: inline-block;
+  font-weight: bold;
+  padding: 15px 100px;
+}
+
+.custom-select {
+  background-color: #901c1c;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 150px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.custom-select:focus {
+  outline: none;
+}
+
+.custom-select:hover {
+  outline: none;
+  background-color: #d3573c;
+}
+
+.custom-select option {
+  background-color: #901c1c;
+  color: white;
+  border-bottom: 1px solid white;
+}
+
+#media-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  padding: 40px 100px;
+  margin-bottom: 80px;
+}
+
+.media-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#media-gallery article {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+#media-gallery img,
+#media-gallery video {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#media-gallery h2 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #333;
+}
+
+#media-gallery p {
+  margin: 0;
+  font-weight: bold;
+  color: #901c1c;
+}
+
+#media-gallery article {
+  padding: 10px;
+}
+
+.like-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  margin-left: 8px;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.like-icon:hover {
+  transform: scale(1.2);
+}
+
+.like-icon.liked {
+  color: red;
+}
+
+#lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lightbox-media img,
+.lightbox-media video {
+  max-height: 80vh;
+  max-width: 80vw;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: none;
+  color: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.lightbox-close {
+  top: 10px;
+  right: 20px;
+}
+
+.lightbox-prev {
+  left: -60px;
+}
+
+.lightbox-next {
+  right: -60px;
+}
+
+#lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+#lightbox-media img,
+#lightbox-media video {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: 5px;
+}
+
+#lightbox-close,
+#lightbox-prev,
+#lightbox-next {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  position: absolute;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+#lightbox-close {
+  top: 10px;
+  right: 20px;
+}
+
+#lightbox-prev {
+  color: #901c1c;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#lightbox-next {
+  color: #901c1c;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
