@@ -18,6 +18,11 @@ header {
   height: 90px;
 }
 
+h1 {
+  margin-right: 100px;
+  color: #901c1c;
+}
+
 .photographer_section {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -66,7 +71,7 @@ header {
   text-decoration: none;
   display: contents;
 }
-
+/*
 .photographer-name-243 {
   padding-left: 15px;
 }

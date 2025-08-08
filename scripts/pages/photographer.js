@@ -59,9 +59,9 @@ function displayMediaGallery(medias) {
     let content = "";
 
     if (media.image) {
-      content = `<img src="Sample_Photos/${media.image}" alt="${media.title}" class="media-clickable" data-id="${media.id}" />`;
+      content = `<img src="Sample_Photos/${media.image}" alt="${media.title}" class="media-clickable" data-id="${media.id}" tabindex="0" role="button" aria-label="${media.title}"/>`;
     } else if (media.video) {
-      content = `<video class="media-clickable" data-id="${media.id}" controls><source src="Sample_Photos/${media.video}" type="video/mp4" /></video>`;
+      content = `<video class="media-clickable" data-id="${media.id}" tabindex="0" role="button"><source src="Sample_Photos/${media.video}" type="video/mp4" aria-label="${media.title}"/></video>`;
     }
 
     article.innerHTML = `
@@ -82,6 +82,21 @@ function displayMediaGallery(medias) {
   setupLightbox(medias);
 }
 
+function createStickyFooter(photographer, medias) {
+  const totalLikes = medias.reduce((sum, media) => sum + media.likes, 0);
+
+  const footer = document.createElement("div");
+  footer.id = "sticky-footer";
+  footer.innerHTML = `
+    <span><span id="total-likes">${totalLikes.toLocaleString(
+      "fr-FR"
+    )}</span> ❤</span>
+    <span>${photographer.price}€ / jour</span>
+  `;
+
+  document.body.appendChild(footer);
+}
+
 function setupLikes(medias) {
   const likedMedia = JSON.parse(localStorage.getItem("likedMedia")) || [];
 
@@ -99,7 +114,6 @@ function setupLikes(medias) {
     }
 
     icon.addEventListener("click", () => {
-      let currentLikes = parseInt(likeCount.textContent);
       if (!isLiked) {
         likeCount.textContent = baseLikes + 1;
         icon.classList.add("liked");
@@ -114,8 +128,25 @@ function setupLikes(medias) {
       }
 
       localStorage.setItem("likedMedia", JSON.stringify(likedMedia));
+
+      updateTotalLikes();
     });
   });
+}
+
+let allLikeSpans;
+
+function updateTotalLikes() {
+  let newTotal = 0;
+  allLikeSpans.forEach((span) => {
+    newTotal += parseInt(span.textContent);
+  });
+  const totalLikesElem = document.getElementById("total-likes");
+  if (totalLikesElem) {
+    totalLikesElem.textContent = newTotal.toLocaleString("fr-FR");
+  }
+
+  localStorage.setItem("likedMedia", JSON.stringify(likedMedia));
 }
 
 function setupLightbox(medias) {
@@ -149,7 +180,7 @@ function setupLightbox(medias) {
 
     lightboxMedia.innerHTML = media.image
       ? `<img src="Sample_Photos/${media.image}" alt="${media.title}" />`
-      : `<video controls autoplay><source src="Sample_Photos/${media.video}" type="video/mp4" /></video>`;
+      : `<video controls><source src="Sample_Photos/${media.video}" type="video/mp4" aria-label="${media.title}" /></video>`;
 
     overlay.style.display = "flex";
     document.body.style.overflow = "hidden";
@@ -188,6 +219,51 @@ function setupLightbox(medias) {
   });
 }
 
+function setupSorting(medias) {
+  function sortAndDisplay(criteria) {
+    const sortedMedias = [...medias];
+
+    if (criteria === "popularity") {
+      sortedMedias.sort((a, b) => b.likes - a.likes);
+    } else if (criteria === "date") {
+      sortedMedias.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (criteria === "title") {
+      sortedMedias.sort((a, b) =>
+        a.title.localeCompare(b.title, "fr", { sensitivity: "base" })
+      );
+    }
+
+    displayMediaGallery(sortedMedias);
+    setupLikes(sortedMedias);
+    setupLightbox(sortedMedias);
+
+    allLikeSpans = document.querySelectorAll(".likes-count");
+    updateTotalLikes();
+  }
+
+  document.addEventListener("change", (e) => {
+    const target = e.target;
+    if (!target) return;
+    if (target.id === "sortSelect") {
+      sortAndDisplay(target.value);
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    const item = e.target.closest && e.target.closest(".dropdown-item");
+    if (item && item.dataset && item.dataset.value) {
+      const value = item.dataset.value;
+      const sel = document.getElementById("sortSelect");
+      if (sel) sel.value = value;
+      sortAndDisplay(value);
+    }
+  });
+
+  const sel = document.getElementById("sortSelect");
+  const initial = sel ? sel.value : "popularity";
+  sortAndDisplay(initial);
+}
+
 function displayModal() {
   document.getElementById("contact_modal").style.display = "block";
 }
@@ -208,7 +284,8 @@ async function init() {
   const photographerMedia = media.filter((m) => m.photographerId === id);
 
   displayPhotographerHeader(photographer);
-  displayMediaGallery(photographerMedia);
+  createStickyFooter(photographer, photographerMedia);
+  setupSorting(photographerMedia);
 }
 
 init();

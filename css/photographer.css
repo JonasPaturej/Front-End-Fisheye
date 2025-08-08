@@ -300,7 +300,7 @@ form input {
   flex-direction: row;
   background: #fff;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 30px 60px;
 }
 
 #lightbox-media img,
@@ -323,8 +323,9 @@ form input {
 }
 
 #lightbox-close {
-  top: 10px;
-  right: 20px;
+  color: #901c1c;
+  top: 20px;
+  right: 10px;
 }
 
 #lightbox-prev {
@@ -339,4 +340,32 @@ form input {
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
+}
+
+#sticky-footer {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 15%;
+  height: 50px;
+  background-color: #d3573c;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  font-size: 16px;
+  font-weight: 500;
+  z-index: 9999;
+  border-top: 1px solid #ccc;
+}
+
+#sticky-footer span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#sticky-footer span:last-child {
+  font-weight: 600;
 }
