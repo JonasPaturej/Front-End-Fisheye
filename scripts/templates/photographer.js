@@ -10,6 +10,7 @@ function photographerTemplate(data) {
     link.setAttribute("href", `photographer.html?id=${id}`);
     link.setAttribute("aria-label", `Voir la page de ${name}`);
     link.classList.add("no-underline");
+    link.setAttribute("tabindex", "0");
 
     const img = document.createElement("img");
     img.setAttribute("src", picture);
