@@ -31,9 +31,17 @@ function displayPhotographerHeader(photographer) {
   infoDiv.appendChild(tagline);
 
   const contactButton = document.createElement("button");
+  contactButton.id = "contact_button";
   contactButton.className = "contact_button";
   contactButton.textContent = "Contactez-moi";
   contactButton.addEventListener("click", displayModal);
+
+  createModal();
+
+  const contactBtn = document.getElementById("contact_button");
+  if (contactBtn) {
+    contactBtn.addEventListener("click", () => displayModal());
+  }
 
   const portrait = document.createElement("img");
   portrait.className = "photographer-portrait";
@@ -48,33 +56,93 @@ function displayPhotographerHeader(photographer) {
   if (modalName) modalName.textContent = photographer.name;
 }
 
+function mediaFactory(media) {
+  if (media.image) {
+    return new ImageMedia(media);
+  } else if (media.video) {
+    return new VideoMedia(media);
+  }
+}
+
+class ImageMedia {
+  constructor(media) {
+    this.media = media;
+  }
+
+  getDOM() {
+    const img = document.createElement("img");
+    img.src = `Sample_Photos/${this.media.image}`;
+    img.alt = this.media.title;
+    img.classList.add("media-clickable");
+    img.dataset.id = this.media.id;
+    img.tabIndex = 0;
+    img.setAttribute("role", "button");
+    img.setAttribute("aria-label", this.media.title);
+    return img;
+  }
+}
+
+class VideoMedia {
+  constructor(media) {
+    this.media = media;
+  }
+
+  getDOM() {
+    const video = document.createElement("video");
+    video.classList.add("media-clickable");
+    video.dataset.id = this.media.id;
+    video.tabIndex = 0;
+    video.setAttribute("role", "button");
+
+    const source = document.createElement("source");
+    source.src = `Sample_Photos/${this.media.video}`;
+    source.type = "video/mp4";
+    source.setAttribute("aria-label", this.media.title);
+
+    video.appendChild(source);
+    return video;
+  }
+}
+
 function displayMediaGallery(medias) {
   const gallery = document.getElementById("media-gallery");
   gallery.innerHTML = "";
 
-  const likedMedia = JSON.parse(localStorage.getItem("likedMedia")) || [];
-
   medias.forEach((media) => {
     const article = document.createElement("article");
-    let content = "";
 
-    if (media.image) {
-      content = `<img src="Sample_Photos/${media.image}" alt="${media.title}" class="media-clickable" data-id="${media.id}" tabindex="0" role="button" aria-label="${media.title}"/>`;
-    } else if (media.video) {
-      content = `<video class="media-clickable" data-id="${media.id}" tabindex="0" role="button"><source src="Sample_Photos/${media.video}" type="video/mp4" aria-label="${media.title}"/></video>`;
-    }
+    const mediaElement = mediaFactory(media).getDOM();
+    article.appendChild(mediaElement);
 
-    article.innerHTML = `
-      ${content}
-      <div class="media-info">
-        <h2>${media.title}</h2>
-        <p class="like">
-          <span class="likes-count" data-id="${media.id}" data-likes="${media.likes}">${media.likes}</span>
-          <span class="like-icon" data-id="${media.id}" aria-label="likes" tabindex="0">❤</span>
-        </p>
-      </div>
-    `;
+    const infoDiv = document.createElement("div");
+    infoDiv.classList.add("media-info");
 
+    const title = document.createElement("h2");
+    title.textContent = media.title;
+
+    const likeContainer = document.createElement("p");
+    likeContainer.classList.add("like");
+
+    const likesCount = document.createElement("span");
+    likesCount.classList.add("likes-count");
+    likesCount.dataset.id = media.id;
+    likesCount.dataset.likes = media.likes;
+    likesCount.textContent = media.likes;
+
+    const likeIcon = document.createElement("span");
+    likeIcon.classList.add("like-icon");
+    likeIcon.dataset.id = media.id;
+    likeIcon.setAttribute("aria-label", "likes");
+    likeIcon.tabIndex = 0;
+    likeIcon.textContent = "❤";
+
+    likeContainer.appendChild(likesCount);
+    likeContainer.appendChild(likeIcon);
+
+    infoDiv.appendChild(title);
+    infoDiv.appendChild(likeContainer);
+
+    article.appendChild(infoDiv);
     gallery.appendChild(article);
   });
 
@@ -178,9 +246,19 @@ function setupLightbox(medias) {
     currentIndex = index;
     const media = medias[index];
 
-    lightboxMedia.innerHTML = media.image
-      ? `<img src="Sample_Photos/${media.image}" alt="${media.title}" />`
-      : `<video controls><source src="Sample_Photos/${media.video}" type="video/mp4" aria-label="${media.title}" /></video>`;
+    let mediaHTML = "";
+    if (media.image) {
+      mediaHTML = `<img src="Sample_Photos/${media.image}" alt="${media.title}" />`;
+    } else if (media.video) {
+      mediaHTML = `<video controls>
+                   <source src="Sample_Photos/${media.video}" type="video/mp4" aria-label="${media.title}" />
+                 </video>`;
+    }
+
+    lightboxMedia.innerHTML = `
+    ${mediaHTML}
+    <p class="lightbox-title">${media.title}</p>
+  `;
 
     overlay.style.display = "flex";
     document.body.style.overflow = "hidden";
