@@ -15,11 +15,11 @@ function photographerTemplate(data) {
     const img = document.createElement("img");
     img.setAttribute("src", picture);
     img.setAttribute("alt", name);
-    img.classList.add("photographer-img-${id}");
+    img.classList.add(`photographer-img-${id}`);
 
     const h2 = document.createElement("h2");
     h2.textContent = name;
-    h2.classList.add("photographer-name-${id}");
+    h2.classList.add(`photographer-name-${id}`);
 
     link.appendChild(img);
     link.appendChild(h2);
@@ -43,5 +43,6 @@ function photographerTemplate(data) {
 
     return article;
   }
-  return { name, picture, getUserCardDOM };
+
+  return { id, name, picture, city, country, tagline, price, getUserCardDOM };
 }

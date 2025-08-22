@@ -1,3 +1,5 @@
+/*global photographerTemplate*/
+
 async function getPhotographers() {
   try {
     const reponse = await fetch("./data/photographers.json");
