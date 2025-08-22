@@ -1,4 +1,3 @@
-/* --------- UTILS --------- */
 function getPhotographerIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return parseInt(params.get("id"));
@@ -9,11 +8,11 @@ async function getData() {
   return await response.json();
 }
 
-/* --------- FACTORY POUR LE PHOTOGRAPHE --------- */
+/* --------- Bandeau Photographe --------- */
 function photographerFactory(photographer) {
   return {
     getHeaderDOM: function () {
-      const wrapper = document.createDocumentFragment(); // fragment temporaire
+      const wrapper = document.createDocumentFragment();
 
       const infoDiv = document.createElement("div");
       infoDiv.className = "photographer-info";
@@ -39,7 +38,6 @@ function photographerFactory(photographer) {
       contactButton.textContent = "Contactez-moi";
       contactButton.setAttribute("aria-label", "Contact me");
 
-      // Listener : créer la modale au clic si nécessaire et l'afficher
       contactButton.addEventListener("click", () => {
         if (typeof createModal === "function") createModal();
 
@@ -63,7 +61,7 @@ function photographerFactory(photographer) {
   };
 }
 
-/* --------- FACTORY POUR LES MEDIAS --------- */
+/* --------- Factory des médias --------- */
 function mediaFactory(media) {
   if (media.image) return new ImageMedia(media);
   else if (media.video) return new VideoMedia(media);
@@ -109,7 +107,7 @@ class VideoMedia {
   }
 }
 
-/* --------- AFFICHAGE DES MEDIAS --------- */
+/* --------- Affichage des médias --------- */
 function displayMediaGallery(medias) {
   const gallery = document.getElementById("media-gallery");
   gallery.innerHTML = "";
@@ -156,7 +154,7 @@ function displayMediaGallery(medias) {
   setupLightbox(medias);
 }
 
-/* --------- FOOTER --------- */
+/* --------- Footer --------- */
 function createStickyFooter(photographer, medias) {
   const totalLikes = medias.reduce((sum, media) => sum + media.likes, 0);
 
@@ -172,7 +170,7 @@ function createStickyFooter(photographer, medias) {
   document.body.appendChild(footer);
 }
 
-/* --------- SYSTEME DE LIKES --------- */
+/* --------- Système de likes --------- */
 function setupLikes() {
   const likedMedia = JSON.parse(localStorage.getItem("likedMedia")) || [];
 
@@ -234,7 +232,7 @@ function updateTotalLikes() {
   }
 }
 
-/* --------- LIGHTBOX --------- */
+/* --------- Lightbox --------- */
 function setupLightbox(medias) {
   const oldOverlay = document.getElementById("lightbox-overlay");
   if (oldOverlay) oldOverlay.remove();
@@ -315,7 +313,7 @@ function setupLightbox(medias) {
   });
 }
 
-/* --------- TRI --------- */
+/* --------- Tri --------- */
 function setupSorting(medias) {
   function sortAndDisplay(criteria) {
     const sortedMedias = [...medias];
@@ -359,13 +357,13 @@ function setupSorting(medias) {
   sortAndDisplay(initial);
 }
 
-/* --------- MODALE --------- */
+/* --------- Modale --------- */
 function displayModal() {
   const modal = document.getElementById("contact_modal");
   if (modal) modal.style.display = "block";
 }
 
-/* --------- INIT --------- */
+/* --------- Init --------- */
 async function init() {
   const id = getPhotographerIdFromUrl();
   const { photographers, media } = await getData();
@@ -378,7 +376,6 @@ async function init() {
 
   const photographerMedia = media.filter((m) => m.photographerId === id);
 
-  // utilisation de la factory photographe
   const headerContainer = document.getElementById("photographer-header");
   const photographerModel = photographerFactory(photographer);
   headerContainer.innerHTML = "";
