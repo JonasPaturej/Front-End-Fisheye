@@ -1,4 +1,4 @@
-function photographerTemplate(data) {
+export function photographerTemplate(data) {
   const { id, name, portrait, city, country, tagline, price } = data;
 
   const picture = portrait;
@@ -10,7 +10,6 @@ function photographerTemplate(data) {
     link.setAttribute("href", `photographer.html?id=${id}`);
     link.setAttribute("aria-label", `Voir la page de ${name}`);
     link.classList.add("no-underline");
-    link.setAttribute("tabindex", "0");
 
     const img = document.createElement("img");
     img.setAttribute("src", picture);

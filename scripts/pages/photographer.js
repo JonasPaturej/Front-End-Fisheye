@@ -1,3 +1,5 @@
+import { createModal } from "../utils/contactForm.js";
+
 function getPhotographerIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return parseInt(params.get("id"));
@@ -80,7 +82,6 @@ class ImageMedia {
     img.dataset.id = this.media.id;
     img.tabIndex = 0;
     img.setAttribute("role", "button");
-    img.setAttribute("aria-label", this.media.title);
     return img;
   }
 }

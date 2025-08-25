@@ -1,4 +1,4 @@
-function displayModal() {
+export function displayModal() {
   const modal = document.getElementById("contact_modal");
   modal.style.display = "flex";
   modal.setAttribute("aria-hidden", "false");
@@ -21,7 +21,7 @@ function closeModal() {
   document.removeEventListener("keydown", handleTrapFocus);
 }
 
-function createModal() {
+export function createModal() {
   const modalOverlay = document.createElement("div");
   modalOverlay.id = "contact_modal";
   modalOverlay.style.display = "none";
@@ -89,6 +89,7 @@ function createModal() {
     if (type !== "textarea") input.type = type;
     input.id = name;
     input.name = name;
+    input.setAttribute("aria-label", labelText);
     input.required = true;
 
     input.value = localStorage.getItem("contact_" + name) || "";
